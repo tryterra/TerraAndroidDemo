@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">TerraDemo</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="connect_to_shealth">Connect to Samsung Health</string>
+
+    <string name="notice">Notice</string>
+    <string name="msg_perm_acquired">All permissions should be acquired</string>
+    <string name="msg_conn_not_available">Connection with Samsung Health is not available</string>
+    <string name="activity">ACTIVITY</string>
+    <string name="athlete">ATHLETE</string>
+    <string name="daily">DAILY</string>
+    <string name="sleep">SLEEP</string>
+    <string name="body">BODY</string>
+    <string name="menstruation">MENSTRUATION</string>
+
+    <string name="terra">TERRA</string>
+
+    <string name="startDate">Start Date</string>
+    <string name="endDate">End Date</string>
+
+
+    <string name="msg_req_install">Please install Samsung Health</string>
+    <string name="msg_req_upgrade">Please upgrade Samsung Health</string>
+    <string name="msg_req_enable">Please enable Samsung Health</string>
+    <string name="msg_req_agree">Please agree to Samsung Health policy</string>
+    <string name="msg_req_available">Please make Samsung Health available</string>
+    <string name="enter_date">Enter Date</string>
+    <string name="submit">Submit</string>
+    <string name="confirm">Confirm</string>
+    <string name="connect_terra">Connect Terra</string>
+</resources>
