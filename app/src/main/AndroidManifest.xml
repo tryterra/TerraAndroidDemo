@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="co.tryterra.terrasamsungdemo"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="co.tryterra.terraandroiddemo"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0">
+
+
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
+    <uses-permission android:name="android.permission.BODY_SENSORS"/>
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+        tools:replace="android:theme"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -23,8 +30,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".CustomTabsReceiver"
-            android:enabled="true"/>
     </application>
 
 </manifest>

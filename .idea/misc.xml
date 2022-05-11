@@ -3,7 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.12386018237082067" />
+        <entry key="app/src/main/res/drawable/button_design.xml" value="0.15648148148148147" />
+        <entry key="app/src/main/res/drawable/buttons_container.xml" value="0.15648148148148147" />
+        <entry key="app/src/main/res/drawable/terra_dark.xml" value="0.15648148148148147" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.284315716003922" />
+        <entry key="app/src/main/res/layout/activity_terra_server.xml" value="0.1" />
         <entry key="app/src/main/res/menu/menu.xml" value="0.1574074074074074" />
       </map>
     </option>

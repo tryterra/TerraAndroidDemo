@@ -1,4 +1,4 @@
-package co.tryterra.terrasamsungdemo
+package co.tryterra.terraandroiddemo
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

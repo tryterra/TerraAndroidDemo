@@ -2,14 +2,20 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/connect"
+        android:id="@+id/connect_shealth"
         android:title="@string/connect_to_shealth"
         android:textAllCaps="false"
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/connectTerra"
-        android:title="@string/connect_terra"
+        android:id="@+id/connectGfit"
         android:textAllCaps="false"
+        android:title="Connect to GoogleFit"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/startRealtime"
+        android:title="Start Realtime" />
+    <item
+        android:id="@+id/stopRealtime"
+        android:title="StopRealtime" />
 </menu>

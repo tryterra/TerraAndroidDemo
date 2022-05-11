@@ -1,4 +1,4 @@
-package co.tryterra.terrasamsungdemo
+package co.tryterra.terraandroiddemo
 
 import org.junit.Test
 
