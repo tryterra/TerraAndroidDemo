@@ -13,6 +13,11 @@
         android:title="Connect to GoogleFit"
         app:showAsAction="never" />
     <item
+        android:id="@+id/connect_fsl"
+        android:textAllCaps="false"
+        android:title="Connect to FSL"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/startRealtime"
         android:title="Start Realtime" />
     <item
