@@ -11,13 +11,11 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import co.tryterra.terra.Terra
 import java.time.Instant
 import java.time.LocalDate
 import java.util.*
 import java.time.ZoneOffset
-import androidx.browser.customtabs.*
 import co.tryterra.terra.Connections
 import co.tryterra.terra.googlefit.GoogleFitRealtimeCategories
 
