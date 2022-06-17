@@ -1,26 +1,29 @@
 package co.tryterra.terraandroiddemo
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
+import android.view.*
 import android.widget.Button
+import android.widget.ListView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import co.tryterra.terra.Connections
 import co.tryterra.terra.Terra
+import co.tryterra.terra.googlefit.GoogleFitRealtimeCategories
 import java.time.Instant
 import java.time.LocalDate
-import java.util.*
-import java.time.ZoneOffset
-import co.tryterra.terra.Connections
-import co.tryterra.terra.googlefit.GoogleFitRealtimeCategories
-
-import java.lang.IllegalStateException
 import java.time.LocalTime
+import java.time.ZoneOffset
+import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
     private var terra: Terra? = null
@@ -239,6 +242,14 @@ class MainActivity : AppCompatActivity() {
 
         if (item.itemId == R.id.stopRealtime) {
             terra?.stopRealtime(Connections.GOOGLE_FIT)
+        }
+
+        if (item.itemId == R.id.connectTerra){
+            GenerateSessionID(XAPIKey, devId, "testing").getAuthUrl {
+                val loginIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
+                startActivity(loginIntent)
+            }
+
         }
         return true
     }

@@ -23,4 +23,9 @@
     <item
         android:id="@+id/stopRealtime"
         android:title="StopRealtime" />
+
+    <item
+        android:id="@+id/connectTerra"
+        android:title="Connect Terra"/>
+
 </menu>
