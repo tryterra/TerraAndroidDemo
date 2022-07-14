@@ -1,32 +1,36 @@
 package co.tryterra.terraandroiddemo
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Button
-import android.widget.ListView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import co.tryterra.terra.Connections
 import co.tryterra.terra.Terra
-import co.tryterra.terra.googlefit.GoogleFitRealtimeCategories
+import co.tryterra.terra.samsung.SamsungHealthPermissions
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneOffset
 import java.util.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.asCoroutineDispatcher
+import java.util.concurrent.Executors
+import kotlin.coroutines.CoroutineContext
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CoroutineScope {
     private var terra: Terra? = null
+
+    override val coroutineContext: CoroutineContext
+        get() = Job() + Executors.newSingleThreadExecutor().asCoroutineDispatcher()
+
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -42,7 +46,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bodyButton: Button
     private lateinit var athleteButton: Button
 
-    private lateinit var disconnectButton: Button
 
     private var startTimeActivity: Long = LocalDate.now().atTime(LocalTime.now()).toEpochSecond(
         ZoneOffset.UTC) * 1000
@@ -54,8 +57,6 @@ class MainActivity : AppCompatActivity() {
         ZoneOffset.UTC) * 1000
 
 
-
-
     @SuppressLint("SetTextI18n")
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +64,6 @@ class MainActivity : AppCompatActivity() {
         try {
             terra = Terra(
                 devId = devId,
-                XAPIKey = XAPIKey,
                 context = this,
                 bodyTimer = 60 * 60 * 1000,
                 dailyTimer = 60 * 60 * 1000,
@@ -97,11 +97,10 @@ class MainActivity : AppCompatActivity() {
         bodyButton = findViewById(R.id.body)
         athleteButton = findViewById(R.id.athlete)
 
-        disconnectButton = findViewById(R.id.disconnect)
-
-        disconnectButton.setOnClickListener {
-            disconnectTerra(terra!!, REQUEST_RESOURCE)
+        athleteButton.setOnClickListener {
+            requestAthleteData(terra!!, REQUEST_RESOURCE)
         }
+
 
         startTimeActivity = LocalDate.parse(activityDate.text.toString()).atStartOfDay().toInstant(
             ZoneOffset.UTC).toEpochMilli()
@@ -125,6 +124,7 @@ class MainActivity : AppCompatActivity() {
                         "$yearDisplayed-${(monthOfYear + 1).toString().padStart(2, '0')}-${dayOfMonth.toString().padStart(2, '0')}"
                     startTimeActivity = LocalDate.parse(activityDate.text.toString()).atTime(LocalTime.now()).toInstant(
                         ZoneOffset.UTC).toEpochMilli()
+                    Log.i(TAG, startTimeActivity.toString())
                     activityButton.setOnClickListener { requestActivityData(startTimeActivity- ONE_DAY, startTimeActivity, terra!!, REQUEST_RESOURCE) }
 
                 },
@@ -213,44 +213,47 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.connect_shealth) {
-            terra!!.initConnection(connection = Connections.SAMSUNG, context = this)
-            activityButton.setOnClickListener { requestActivityData(startTimeActivity - ONE_DAY, startTimeActivity, terra!!, Connections.SAMSUNG) }
-            sleepButton.setOnClickListener { requestSleepData(startTimeSleep- ONE_DAY, startTimeSleep, terra!!, Connections.SAMSUNG) }
-            dailyButton.setOnClickListener { requestDailyData(startTimeDaily- ONE_DAY, startTimeDaily, terra!!, Connections.SAMSUNG) }
-            bodyButton.setOnClickListener { requestBodyData(startTimeBody- ONE_DAY, startTimeBody , terra!!, Connections.SAMSUNG) }
-            athleteButton.setOnClickListener { requestAthleteData(terra!!, Connections.SAMSUNG) }
-            disconnectButton.setOnClickListener { disconnectTerra(terra!!, Connections.SAMSUNG) }
-
+            GenerateAuthToken(devId, XAPIKey).getAuthToken { it ->
+                terra!!.initConnection(connection = Connections.SAMSUNG, context = this, token = it, completion = {success ->
+                    Log.i(TAG, success.toString())
+                })
+                activityButton.setOnClickListener { requestActivityData(startTimeActivity - (ONE_DAY*10), startTimeActivity, terra!!, Connections.SAMSUNG) }
+                sleepButton.setOnClickListener { requestSleepData(startTimeSleep- ONE_DAY, startTimeSleep, terra!!, Connections.SAMSUNG) }
+                dailyButton.setOnClickListener { requestDailyData(startTimeDaily- ONE_DAY, startTimeDaily, terra!!, Connections.SAMSUNG) }
+                bodyButton.setOnClickListener { requestBodyData(startTimeBody- ONE_DAY, startTimeBody , terra!!, Connections.SAMSUNG) }
+                athleteButton.setOnClickListener { requestAthleteData(terra!!, Connections.SAMSUNG) }
+            }
         }
 
         if (item.itemId == R.id.connectGfit){
-            terra!!.initConnection(Connections.GOOGLE_FIT, this)
-            activityButton.setOnClickListener { requestActivityData(startTimeActivity- ONE_DAY, startTimeActivity , terra!!, Connections.GOOGLE_FIT) }
-            sleepButton.setOnClickListener { requestSleepData(startTimeSleep- ONE_DAY, startTimeSleep , terra!!, Connections.GOOGLE_FIT) }
-            dailyButton.setOnClickListener { requestDailyData(startTimeDaily- ONE_DAY, startTimeDaily , terra!!, Connections.GOOGLE_FIT) }
-            bodyButton.setOnClickListener { requestBodyData(startTimeBody- ONE_DAY, startTimeBody , terra!!, Connections.GOOGLE_FIT) }
-            athleteButton.setOnClickListener { requestAthleteData(terra!!, Connections.GOOGLE_FIT) }
-            disconnectButton.setOnClickListener { disconnectTerra(terra!!, Connections.GOOGLE_FIT) }
+            GenerateAuthToken(devId, XAPIKey).getAuthToken {
+                terra!!.initConnection(Connections.GOOGLE_FIT, context = this, token = it, completion = {success ->
+                    Log.i(TAG, success.toString())
+                })
+                activityButton.setOnClickListener { requestActivityData(startTimeActivity- ONE_DAY, startTimeActivity , terra!!, Connections.GOOGLE_FIT) }
+                sleepButton.setOnClickListener { requestSleepData(startTimeSleep- ONE_DAY, startTimeSleep , terra!!, Connections.GOOGLE_FIT) }
+                dailyButton.setOnClickListener { requestDailyData(startTimeDaily- ONE_DAY, startTimeDaily , terra!!, Connections.GOOGLE_FIT) }
+                bodyButton.setOnClickListener { requestBodyData(startTimeBody- ONE_DAY, startTimeBody , terra!!, Connections.GOOGLE_FIT) }
+                athleteButton.setOnClickListener { requestAthleteData(terra!!, Connections.GOOGLE_FIT) }
+            }
+        }
+
+        if (item.itemId == R.id.permissions){
+            terra!!.requestSamsungHealthPermission(setOf(SamsungHealthPermissions.ACTIVITY, SamsungHealthPermissions.DAILY))
         }
 
         if (item.itemId == R.id.connect_fsl){
-            terra!!.initConnection(Connections.FREESTYLE_LIBRE, this, startIntent = "co.tryterra.terraandroiddemo.MainActivity")
-        }
-        if (item.itemId == R.id.startRealtime) {
-            terra?.startRealtime(Connections.GOOGLE_FIT, setOf(GoogleFitRealtimeCategories.STEP_COUNT_DELTA))
-        }
-
-        if (item.itemId == R.id.stopRealtime) {
-            terra?.stopRealtime(Connections.GOOGLE_FIT)
-        }
-
-        if (item.itemId == R.id.connectTerra){
-            GenerateSessionID(XAPIKey, devId, "testing").getAuthUrl {
-                val loginIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
-                startActivity(loginIntent)
+            GenerateAuthToken(devId, XAPIKey).getAuthToken {
+                terra!!.initConnection(Connections.FREESTYLE_LIBRE, context = this, token = it, completion = {success ->
+                    Log.i(TAG, success.toString())
+                })
             }
-
         }
+
+        if(item.itemId == R.id.activateSensor){
+            terra?.activateSensor()
+        }
+
         return true
     }
 
@@ -303,16 +306,9 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun disconnectTerra(terra: Terra, resource: Connections) {
-        terra.disconnect(resource)
-    }
-
-
-
     companion object{
         const val TAG = "Terra"
         const val ONE_DAY = 86400000
-        val REQUEST_RESOURCE = Connections.SAMSUNG
+        var REQUEST_RESOURCE = Connections.GOOGLE_FIT
     }
 }

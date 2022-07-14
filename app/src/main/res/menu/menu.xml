@@ -18,14 +18,13 @@
         android:title="Connect to FSL"
         app:showAsAction="never" />
     <item
-        android:id="@+id/startRealtime"
-        android:title="Start Realtime" />
-    <item
-        android:id="@+id/stopRealtime"
-        android:title="StopRealtime" />
+        android:id="@+id/permissions"
+        android:textAllCaps="false"
+        android:title="S Health Permissions"
+        app:showAsAction="never" />
 
     <item
-        android:id="@+id/connectTerra"
-        android:title="Connect Terra"/>
+        android:id="@+id/activateSensor"
+        android:title="Activate Sensor" />
 
 </menu>
