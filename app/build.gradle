@@ -40,7 +40,6 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'co.tryterra:terra-android:1.0.10'
-    implementation files('libs/terra-client-0.0.1.jar')
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.2'
