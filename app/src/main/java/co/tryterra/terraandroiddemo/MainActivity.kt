@@ -245,13 +245,12 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         if (item.itemId == R.id.connect_fsl){
             GenerateAuthToken(devId, XAPIKey).getAuthToken {
                 terra!!.initConnection(Connections.FREESTYLE_LIBRE, context = this, token = it, completion = {success ->
+                    // You  can do this through buttons! But this returns a FSLSensorDetails Data class with
+                    // Sensor state and the reading status
                     Log.i(TAG, success.toString())
+                    Log.i(TAG, "${terra!!.readGlucoseData()}")
                 })
             }
-        }
-
-        if(item.itemId == R.id.activateSensor){
-            terra?.activateSensor()
         }
 
         return true
