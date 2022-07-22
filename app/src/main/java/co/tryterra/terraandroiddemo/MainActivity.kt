@@ -99,6 +99,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         athleteButton.setOnClickListener {
             requestAthleteData(terra!!, REQUEST_RESOURCE)
+//            terra!!.readGlucoseData {
+//                Log.i(TAG, "${it}")
+//            }
         }
 
 
@@ -248,7 +251,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     // You  can do this through buttons! But this returns a FSLSensorDetails Data class with
                     // Sensor state and the reading status
                     Log.i(TAG, success.toString())
-                    Log.i(TAG, "${terra!!.readGlucoseData()}")
                 })
             }
         }
